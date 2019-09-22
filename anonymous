@@ -1,0 +1,60 @@
+Spring AOP
+
+Dependencies(JAR)-
+Dependencies(Library)-Spring,AspectJ(aspectjrt.jar, aspectweaver.jar, aopalliance.jar)
+
+The links for the dependencies are:
+AspectJ: http://www.eclipse.org/aspectj/downlo...
+AOP Alliance: http://aopalliance.sourceforge.net/
+CGILIB: http://cglib.sourceforge.net/
+Spring 3 ASM: http://asm.ow2.org/
+
+@Aspect
+public class LoggingAspect{
+
+Expressions1:
+@Before("execution(public String getName())") --> conflict occurs when two of the similar methods called
+public void loggingAdvice(){
+System.out.println("Advice run. Get Method Called")
+}
+}
+Expressions2:
+@Before("execution(public String package.classname.getName())") --> to deal with direct metho member of the class
+Expressions3:
+@Before("execution(public String package.classname.get*())") --> implies to all the getter methods of the class mentioned
+Expressions4:
+@Before("execution(public * package.classname.get*())") --> implies to all the return type of the class with all the getter methods
+Expressions5:
+@Before("execution(public String get*())") -->implies to all methods that returns string type
+Expressions6:
+@Before("execution(public * get*())") -->implies to all return type whatever it be strarting with get method
+Expressions7:
+@Before("execution(* * get*())") -->implies to any access modifier, any return type, with any getter method
+Expressions8:
+@Before("execution(* get*())") -->getter method with zero arguments
+Expressions9:
+@Before("execution(* get*(..))") -->getter methods with any nos. of arguments
+Expressions10:
+@Before("execution(* package.class.*. get*(()") -->any modifiers-getter methods of that class
+
+@Pointcut -> used when similar functionality has to be done with similar methods without duplicating code
+example-
+clone of Expressions2 because both are having same getter method with same operation so, it can be acheived with pointcuts.
+
+means-
+@Before("execution(* get*(()")
+@Before("execution(* get*(()") -->if two methods are of same functionality then we can do this in pointcut,
+
+@Before("allGetters()")
+public void LoggingAdvice(){syso("Advice run. Get method called.");}
+
+@Before("allGetters()")
+public void secondAdvice(){syso("second method running");}
+
+Expressions1:
+@Pointcut("execution(* get*(()")
+public void allGetters(){}
+
+Expressions2:
+@Pointcut("within(package.classname)")
+
